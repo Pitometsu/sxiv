@@ -4,9 +4,9 @@ PREFIX    = /usr/local
 MANPREFIX = $(PREFIX)/share/man
 
 CC      = gcc
-CFLAGS  = -std=c99 -Wall -pedantic -O2 -I$(PREFIX)/include -DHAVE_GIFLIB
+CFLAGS  = -std=c99 -Wall -pedantic -O2 -I/usr/include/freetype2 -DHAVE_GIFLIB
 LDFLAGS = -L$(PREFIX)/lib
-LIBS    = -lX11 -lImlib2 -lgif
+LIBS    = -lX11 -lImlib2 -lgif -lutil -lXext -lXft -lfontconfig
 
 SRC = commands.c exif.c image.c main.c options.c thumbs.c util.c window.c
 OBJ = $(SRC:.c=.o)

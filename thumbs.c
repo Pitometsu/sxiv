@@ -378,7 +378,7 @@ void tns_highlight(tns_t *tns, int n, bool hl)
 	thumb_t *t;
 	win_t *win;
 	int x, y;
-	unsigned long col;
+	XftColor col;
 
 	if (tns == NULL || tns->thumbs == NULL || tns->win == NULL)
 		return;

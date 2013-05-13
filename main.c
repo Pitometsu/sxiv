@@ -350,8 +350,8 @@ void update_info(void)
 	if (ow_info) {
 		fn = strlen(files[sel].name);
 		if (fn < llen &&
-		    win_textwidth(files[sel].name, fn, true) +
-		    win_textwidth(rt, n, true) < win.w)
+		    win_textwidth(&win, files[sel].name, fn, true) +
+		    win_textwidth(&win, rt, n, true) < win.w)
 		{
 			strncpy(lt, files[sel].name, llen);
 		} else {
