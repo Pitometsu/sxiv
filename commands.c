@@ -48,6 +48,7 @@ extern win_t win;
 
 extern fileinfo_t *files;
 extern int filecnt, fileidx;
+extern int markcnt;
 extern int alternate;
 
 extern int prefix;
@@ -60,9 +61,11 @@ bool it_quit(arg_t a)
 {
 	unsigned int i;
 
-	if (options->to_stdout) {
-		for (i = 0; i < filecnt; i++)
-			printf("%s\n", files[i].name);
+	if (options->to_stdout && markcnt > 0) {
+		for (i = 0; i < filecnt; i++) {
+			if (files[i].marked)
+				printf("%s\n", files[i].name);
+		}
 	}
 	cleanup();
 	exit(EXIT_SUCCESS);
@@ -71,8 +74,10 @@ bool it_quit(arg_t a)
 bool it_switch_mode(arg_t a)
 {
 	if (mode == MODE_IMAGE) {
-		if (tns.thumbs == NULL)
+		if (tns.thumbs == NULL) {
 			tns_init(&tns, filecnt, &win);
+			tns.alpha = img.alpha;
+		}
 		img_close(&img, false);
 		reset_timeout(reset_cursor);
 		tns.sel = fileidx;
@@ -237,6 +242,46 @@ bool i_toggle_animation(arg_t a)
 	return true;
 }
 
+bool it_toggle_image_mark(arg_t a)
+{
+	int sel = mode == MODE_IMAGE ? fileidx : tns.sel;
+
+	files[sel].marked = !files[sel].marked;
+	markcnt += files[sel].marked ? 1 : -1;
+	return true;
+}
+
+bool it_navigate_marked(arg_t a)
+{
+	long n = (long) a;
+	int d, i, cnt, sel, new;
+	
+	if (mode == MODE_IMAGE)
+		cnt = filecnt, sel = new = fileidx;
+	else
+		cnt = tns.cnt, sel = new = tns.sel;
+	if (prefix > 0)
+		n *= prefix;
+	d = n > 0 ? 1 : -1;
+	for (i = sel + d; n != 0 && i >= 0 && i < cnt; i += d) {
+		if (files[i].marked) {
+			n -= d;
+			new = i;
+		}
+	}
+	if (new != sel) {
+		if (mode == MODE_IMAGE) {
+			load_image(new);
+		} else {
+			tns.sel = new;
+			tns.dirty = true;
+		}
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool it_scroll_move(arg_t a)
 {
 	direction_t dir = (direction_t) a;
@@ -397,18 +442,14 @@ bool i_fit_to_img(arg_t a)
 
 bool i_rotate(arg_t a)
 {
-	direction_t dir = (direction_t) a;
+	degree_t degree = (degree_t) a;
 
 	if (mode == MODE_IMAGE) {
-		if (dir == DIR_LEFT) {
-			img_rotate_left(&img);
-			return true;
-		} else if (dir == DIR_RIGHT) {
-			img_rotate_right(&img);
-			return true;
-		}
+		img_rotate(&img, degree);
+		return true;
+	}	else {
+		return false;
 	}
-	return false;
 }
 
 bool i_flip(arg_t a)

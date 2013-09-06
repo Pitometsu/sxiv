@@ -62,12 +62,10 @@ Print brief usage information to standard output and exit.
 Read names of files to open from standard input.
 .TP
 .B \-o
-Write list of opened files to standard output when quitting. If combined with
-.IR \-i ,
-then sxiv acts as a visual filter/pipe.
-.TP
-.B \-p
-Pixelize images, i.e. turn off anti-aliasing.
+Write list of all marked files to standard output when quitting. In combination
+with
+.I \-i
+sxiv can be used as a visual filter/pipe.
 .TP
 .B \-q
 Be quiet, disable warnings to standard error stream.
@@ -128,6 +126,19 @@ Reload all thumbnails.
 .TP
 .B D
 Remove current image from file list and go to next image.
+.TP
+.B m
+Mark/unmark the current image.
+.TP
+.B N
+Go
+.I count
+marked images forward.
+.TP
+.B P
+Go
+.I count
+marked images backward.
 .SH THUMBNAIL KEYBOARD COMMANDS
 The following keyboard commands are only available in thumbnail mode:
 .TP
@@ -261,12 +272,15 @@ Rotate image counter-clockwise by 90 degrees.
 .TP
 .B >
 Rotate image clockwise by 90 degrees.
+.TP
+.B ?
+Rotate image by 180 degrees.
 .SS Flip
 .TP
-.B \\\\
+.B |
 Flip image horizontally.
 .TP
-.B |
+.B _
 Flip image vertically.
 .SS Miscellaneous
 .TP

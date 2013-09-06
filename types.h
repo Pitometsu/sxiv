@@ -39,6 +39,12 @@ typedef enum {
 } direction_t;
 
 typedef enum {
+	DEGREE_90  = 1,
+	DEGREE_180 = 2,
+	DEGREE_270 = 3
+} degree_t;
+
+typedef enum {
 	FLIP_HORIZONTAL,
 	FLIP_VERTICAL
 } flipdir_t;
@@ -63,6 +69,7 @@ typedef struct {
 	const char *path; /* always absolute */
 	const char *base;
 	bool loaded;
+	bool marked;
 } fileinfo_t;
 
 /* timeouts in milliseconds: */

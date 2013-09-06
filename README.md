@@ -79,8 +79,7 @@ of small previews is displayed, making it easy to choose an image to open.
     -i           Read file list from stdin
     -n NUM       Start at picture NUM
     -N NAME      Set X window resource name to NAME
-    -o           Write file list to stdout when quitting
-    -p           Pixelize, i.e. turn off image anti-aliasing
+    -o           Write list of marked files to stdout when quitting
     -q           Be quiet, disable warnings
     -r           Search given directories recursively for images
     -s           Scale all images to fit into window
@@ -107,6 +106,10 @@ of small previews is displayed, making it easy to choose an image to open.
     r            Reload image
     R            Reload all thumbnails
     D            Remove image from file list and go to next image
+
+    m            Mark/unmark current image
+    N            Go [count] marked images forward
+    P            Go [count] marked images backward
 
 *Thumbnail mode:*
 
@@ -136,7 +139,8 @@ of small previews is displayed, making it easy to choose an image to open.
                  (also with Ctrl-arrow keys)
 
     <,>          Rotate image (counter-)clockwise by 90 degrees
-    \,|          Flip image horizontally/vertically
+    ?            Rotate image by 180 degrees
+    |,_          Flip image horizontally/vertically
 
     a            Toggle anti-aliasing
     W            Resize window to fit image
@@ -162,6 +166,11 @@ on GitHub or get a copy using git with the following command:
     git clone https://github.com/muennich/sxiv.git
 
 **Stable releases**
+
+**[v1.1.1](https://github.com/muennich/sxiv/archive/v1.1.1.tar.gz)**
+*(June 2, 2013)*
+
+  * Various bug fixes
 
 **[v1.1](https://github.com/muennich/sxiv/archive/v1.1.tar.gz)**
 *(March 30, 2013)*

@@ -18,6 +18,7 @@
 
 #define _POSIX_C_SOURCE 200112L
 #define _IMAGE_CONFIG
+#define _RENDER_CONFIG
 
 #include <stdlib.h>
 #include <string.h>
@@ -62,8 +63,8 @@ void img_init(img_t *img, win_t *win)
 	img->zoom = MIN(img->zoom, zoom_max);
 	img->checkpan = false;
 	img->dirty = false;
-	img->aa = options->aa;
-	img->alpha = true;
+	img->aa = RENDER_ANTI_ALIAS;
+	img->alpha = !RENDER_WHITE_ALPHA;
 	img->multi.cap = img->multi.cnt = 0;
 	img->multi.animate = false;
 }
@@ -650,40 +651,30 @@ bool img_pan_edge(img_t *img, direction_t dir)
 	}
 }
 
-void img_rotate(img_t *img, int d)
+void img_rotate(img_t *img, degree_t d)
 {
-	win_t *win;
 	int ox, oy, tmp;
 
 	if (img == NULL || img->im == NULL || img->win == NULL)
 		return;
 
-	win = img->win;
-	ox = d == 1 ? img->x : win->w - img->x - img->w * img->zoom;
-	oy = d == 3 ? img->y : win->h - img->y - img->h * img->zoom;
-
 	imlib_context_set_image(img->im);
 	imlib_image_orientate(d);
 
-	img->x = oy + (win->w - win->h) / 2;
-	img->y = ox + (win->h - win->w) / 2;
+	if (d == DEGREE_90 || d == DEGREE_270) {
+		ox = d == DEGREE_90  ? img->x : img->win->w - img->x - img->w * img->zoom;
+		oy = d == DEGREE_270 ? img->y : img->win->h - img->y - img->h * img->zoom;
 
-	tmp = img->w;
-	img->w = img->h;
-	img->h = tmp;
+		img->x = oy + (img->win->w - img->win->h) / 2;
+		img->y = ox + (img->win->h - img->win->w) / 2;
 
-	img->checkpan = true;
+		tmp = img->w;
+		img->w = img->h;
+		img->h = tmp;
+		img->checkpan = true;
+	}
+
 	img->dirty = true;
-}
-
-void img_rotate_left(img_t *img)
-{
-	img_rotate(img, 3);
-}
-
-void img_rotate_right(img_t *img)
-{
-	img_rotate(img, 1);
 }
 
 void img_flip(img_t *img, flipdir_t d)
