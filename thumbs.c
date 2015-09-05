@@ -45,7 +45,7 @@ char* tns_cache_filepath(const char *filepath)
 
 	if (cache_dir == NULL || filepath == NULL || *filepath != '/')
 		return NULL;
-	
+
 	if (strncmp(filepath, cache_dir, strlen(cache_dir)) != 0) {
 		/* don't cache images inside the cache directory! */
 		len = strlen(cache_dir) + strlen(filepath) + 2;
@@ -128,7 +128,7 @@ void tns_clean_cache(tns_t *tns)
 
 	if (cache_dir == NULL)
 		return;
-	
+
 	if (r_opendir(&dir, cache_dir) < 0) {
 		warn("could not open thumbnail cache directory: %s", cache_dir);
 		return;
@@ -495,6 +495,11 @@ void tns_render(tns_t *tns)
 
 void tns_mark(tns_t *tns, int n, bool mark)
 {
+	thumb_t *t;
+	win_t *win;
+	int x, y;
+	XftColor col;
+
 	if (tns == NULL || tns->thumbs == NULL || tns->win == NULL)
 		return;
 

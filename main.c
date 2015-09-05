@@ -133,7 +133,7 @@ void check_add_file(char *filename, bool given)
 	}
 
 #if defined _BSD_SOURCE || defined _XOPEN_SOURCE && \
-    ((_XOPEN_SOURCE - 0) >= 500 || defined _XOPEN_SOURCE_EXTENDED)
+  ((_XOPEN_SOURCE - 0) >= 500 || defined _XOPEN_SOURCE_EXTENDED)
 
 	if ((files[fileidx].path = realpath(filename, NULL)) == NULL) {
 		warn("could not get real path of file: %s\n", filename);
@@ -409,10 +409,10 @@ void update_info(void)
 		ow_info = info.cmd == NULL;
 	}
 	if (ow_info) {
-		fn = strlen(files[fileidx].name);
-		if (fn < l->size &&
-		    win_textwidth(files[fileidx].name, fn, true) +
-		    win_textwidth(r->buf, r->p - r->buf, true) < win.w)
+		fn = strlen(files[sel].name);
+		if (fn < llen &&
+		    win_textwidth(&win, files[sel].name, fn, true) +
+		    win_textwidth(&win, rt, n, true) < win.w)
 		{
 			strncpy(l->buf, files[fileidx].name, l->size);
 		} else {

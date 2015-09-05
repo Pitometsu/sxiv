@@ -3,11 +3,10 @@ VERSION   := git-20150819
 PREFIX    := /usr/local
 MANPREFIX := $(PREFIX)/share/man
 
-CC        ?= gcc
-CFLAGS    += -std=c99 -Wall -pedantic
-CPPFLAGS  += -I$(PREFIX)/include -D_XOPEN_SOURCE=500
-LDFLAGS   += -L$(PREFIX)/lib
-LIBS      := -lX11 -lImlib2
+CC      ?= gcc
+CFLAGS  += -std=c99 -Wall -pedantic -O2 -I${PREFIX}/include/freetype2 -DHAVE_GIFLIB -D_XOPEN_SOURCE=500
+LDFLAGS += -L$(PREFIX)/lib
+LIBS    := -lX11 -lImlib2 -lgif -lutil -lXext -lXft -lfontconfig
 
 # optional dependencies:
 # giflib: gif animations
